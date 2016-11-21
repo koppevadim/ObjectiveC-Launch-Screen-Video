@@ -24,8 +24,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillChangeFrame:)
                                                  name:UIKeyboardWillChangeFrameNotification
-                                               object:nil
-     ];
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(applicationDidBecomeActive:)
+                                                name:UIApplicationDidBecomeActiveNotification
+                                              object:nil];
 }
 
 - (void)createVideoPlayer {
@@ -66,6 +70,10 @@
         frame.origin.y += yOffset;
         subview.frame = frame;
     }
+}
+
+- (void)applicationDidBecomeActive:(NSNotification*)notification{
+     [self.player play];
 }
 
 - (void)moviePlayDidEnd:(NSNotification*)notification{
