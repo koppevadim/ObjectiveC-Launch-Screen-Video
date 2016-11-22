@@ -21,10 +21,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createVideoPlayer];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
     
     [[NSNotificationCenter defaultCenter]addObserver:self
                                             selector:@selector(applicationDidBecomeActive:)
@@ -48,28 +44,14 @@
     
     [self.player play];
     
-    [self.player.currentItem addObserver:self forKeyPath:AVPlayerItemDidPlayToEndTimeNotification options:NSKeyValueObservingOptionNew context:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayDidEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moviePlayDidEnd:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:self.player.currentItem];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     //
-}
-
-- (void)keyboardWillChangeFrame:(NSNotification *)notification {
-    NSDictionary *info = [notification userInfo];
-    CGRect beginKeyboardRect = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    CGRect endKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    CGFloat yOffset = endKeyboardRect.origin.y - beginKeyboardRect.origin.y;
-    for (UIView *subview in self.view.subviews) {
-        if ([subview isEqual:self.playerView]) {
-            continue;
-        }
-        CGRect frame = subview.frame;
-        frame.origin.y += yOffset;
-        subview.frame = frame;
-    }
 }
 
 - (void)applicationDidBecomeActive:(NSNotification*)notification{
