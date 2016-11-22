@@ -22,7 +22,7 @@
     [super viewDidLoad];
     [self createVideoPlayer];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                             selector:@selector(applicationDidBecomeActive:)
                                                 name:UIApplicationDidBecomeActiveNotification
                                               object:nil];
@@ -51,15 +51,15 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    //
+    // nothing to do
+    // empty block
 }
 
-- (void)applicationDidBecomeActive:(NSNotification*)notification{
+- (void)applicationDidBecomeActive:(NSNotification*)notification {
      [self.player play];
 }
 
-- (void)moviePlayDidEnd:(NSNotification*)notification{
-    
+- (void)moviePlayDidEnd:(NSNotification*)notification {
     AVPlayerItem *item = [notification object];
     [item seekToTime:kCMTimeZero];
     [self.player play];
